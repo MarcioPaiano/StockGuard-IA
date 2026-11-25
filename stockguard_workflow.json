@@ -1,0 +1,105 @@
+{
+  "name": "StockGuard IA",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "responseMode": "lastNode"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0e75ca31-de7a-465c-9c94-88cb7e7e2783",
+      "name": "When chat message received",
+      "webhookId": "a49e00dd-a0a5-4c11-8fdc-eb12b6d33158"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8001/chat",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "pergunta",
+              "value": "={{ $json.chatInput }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ed1c86f9-ac78-4ad6-a332-621e61417858",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b5478fa1-1493-4868-92ef-939475f3388b",
+              "name": "=output",
+              "value": "={{ $json.resposta }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "61e9b3c7-2720-4de0-8c57-523c5c362f67",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "caca3417-00cc-4136-bf06-770738447e65",
+  "meta": {
+    "instanceId": "d283c667ff18be6b61bb89449db4faa604711132da3640457c14e71d72249922"
+  },
+  "nodeGroups": [],
+  "id": "HbQNAO8WHGSfbJ40",
+  "tags": []
+}
